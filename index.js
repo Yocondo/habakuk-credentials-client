@@ -58,7 +58,6 @@ service = function(options) {
     });
   };
   return {
-    logger: console,
     get: function() {
       if (!credentials) {
         loadCredentials();
@@ -67,5 +66,7 @@ service = function(options) {
     }
   };
 };
+
+service.logger = console;
 
 module.exports = service;

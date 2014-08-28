@@ -36,9 +36,10 @@ service = (options) ->
 				timeout = setTimeout clearCredentials, expiry
 				resolve data.credentials
 
-	logger: console
 	get: ->
 		loadCredentials() unless credentials
 		credentials
+
+service.logger = console
 
 module.exports = service
