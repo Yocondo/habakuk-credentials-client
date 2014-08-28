@@ -1,8 +1,14 @@
 {
   "name": "habakuk-credentials-client",
   "version": "1.0.0",
+  "description": "Client library for the Habakuk Credentials Service.",
   "private": true,
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:yocondo/habakuk-credentials-client.git"
+  },
+  "readmeFilename": "README.md",
   "dependencies": {
     "es6-promise": "^1.0.0",
     "restler": "^3.2.2"
