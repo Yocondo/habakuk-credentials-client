@@ -14,28 +14,29 @@ service = (options) ->
 	timeout = null
 
 	clearCredentials = ->
-		console.log '[habakuk] credentials have expired'
+		service.logger.info '[habakuk] credentials have expired'
 		credentials = null
 		timeout = null
 
 	loadCredentials = ->
 		credentials = new Promise (resolve, reject) ->
 			url = "http://#{options.host}/lease/#{options.type}/#{options.clientId}"
-			console.log '[habakuk] loading credentials from', url
+			service.logger.info '[habakuk] loading credentials from', url
 			clearTimeout timeout if timeout
 			req = rest.get url
 			req.on 'error', reject
 			req.on 'fail', (data, response) ->
-				console.log '[habakuk] could not get credentials (status %d), retrying in %d seconds', response.statusCode, data.retryAfter
+				service.logger.info '[habakuk] could not get credentials (status %d), retrying in %d seconds', response.statusCode, data.retryAfter
 				setTimeout loadCredentials, data.retryAfter * 1000
 			req.on 'success', (data, response) ->
 				data.leasedUntil = new Date data.leasedUntil
 				expiry = data.leasedUntil.getTime() - Date.now()
-				console.log '[habakuk] leased credentials for %d seconds', (expiry / 1000).toFixed 0
+				service.logger.info '[habakuk] leased credentials for %d seconds', (expiry / 1000).toFixed 0
 				clearTimeout timeout if timeout
 				timeout = setTimeout clearCredentials, expiry
 				resolve data.credentials
 
+	logger: console
 	get: ->
 		loadCredentials() unless credentials
 		credentials

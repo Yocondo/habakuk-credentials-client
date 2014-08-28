@@ -26,7 +26,7 @@ service = function(options) {
   credentials = null;
   timeout = null;
   clearCredentials = function() {
-    console.log('[habakuk] credentials have expired');
+    service.logger.info('[habakuk] credentials have expired');
     credentials = null;
     return timeout = null;
   };
@@ -34,21 +34,21 @@ service = function(options) {
     return credentials = new Promise(function(resolve, reject) {
       var req, url;
       url = "http://" + options.host + "/lease/" + options.type + "/" + options.clientId;
-      console.log('[habakuk] loading credentials from', url);
+      service.logger.info('[habakuk] loading credentials from', url);
       if (timeout) {
         clearTimeout(timeout);
       }
       req = rest.get(url);
       req.on('error', reject);
       req.on('fail', function(data, response) {
-        console.log('[habakuk] could not get credentials (status %d), retrying in %d seconds', response.statusCode, data.retryAfter);
+        service.logger.info('[habakuk] could not get credentials (status %d), retrying in %d seconds', response.statusCode, data.retryAfter);
         return setTimeout(loadCredentials, data.retryAfter * 1000);
       });
       return req.on('success', function(data, response) {
         var expiry;
         data.leasedUntil = new Date(data.leasedUntil);
         expiry = data.leasedUntil.getTime() - Date.now();
-        console.log('[habakuk] leased credentials for %d seconds', (expiry / 1000).toFixed(0));
+        service.logger.info('[habakuk] leased credentials for %d seconds', (expiry / 1000).toFixed(0));
         if (timeout) {
           clearTimeout(timeout);
         }
@@ -58,6 +58,7 @@ service = function(options) {
     });
   };
   return {
+    logger: console,
     get: function() {
       if (!credentials) {
         loadCredentials();
