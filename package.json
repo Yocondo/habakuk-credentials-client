@@ -6,7 +6,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@bitbucket.org:yocondo/habakuk-credentials-client.git"
+    "url": "git@github.org:yocondo/habakuk-credentials-client.git"
   },
   "readmeFilename": "README.md",
   "dependencies": {

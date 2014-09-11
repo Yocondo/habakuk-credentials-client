@@ -6,7 +6,7 @@ Client library for the Habakuk Credentials Service.
 Install
 -------
 
-    npm install --save git+ssh://git@bitbucket.org:yocondo/habakuk-credentials-client.git
+    npm install --save git+ssh://git@github.org:yocondo/habakuk-credentials-client.git
 
 Usage
 -----
